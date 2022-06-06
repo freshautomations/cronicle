@@ -25,6 +25,10 @@ Class.subclass( Page.Base, "Page.Login", {
 			this.showRecoverPasswordForm();
 			return true;
 		}
+		else if ((config.saml_enabled && config.saml_only) || args.saml) {
+			this.showSAMLLogin();
+			return true;
+		}
 		
 		app.setWindowTitle('Login');
 		app.showTabBar(false);
@@ -52,6 +56,10 @@ Class.subclass( Page.Base, "Page.Login", {
 			html += '</div>';
 			
 			html += '<div class="dialog_buttons"><center><table><tr>';
+				if (config.saml_enabled) {
+					html += '<td><div class="button" style="width:120px; font-weight:normal;" onMouseUp="$P().navSAMLLogin()">SAML Login</div></td>';
+					html += '<td width="20">&nbsp;</td>';
+				}
 				if (config.free_accounts) {
 					html += '<td><div class="button" style="width:120px; font-weight:normal;" onMouseUp="$P().navCreateAccount()">Create Account...</div></td>';
 					html += '<td width="20">&nbsp;</td>';
@@ -148,7 +156,13 @@ Class.subclass( Page.Base, "Page.Login", {
 		app.clearError();
 		Nav.go('Login?create=1', true);
 	},
-	
+
+	navSAMLLogin: function() {
+		// nav to SAML login page
+		app.clearError();
+		Nav.go('Login?saml=1', true);
+	},
+
 	showCreateAccountForm: function() {
 		// allow user to create a new account
 		app.setWindowTitle('Create Account');
@@ -255,7 +269,23 @@ Class.subclass( Page.Base, "Page.Login", {
 		app.clearError();
 		Nav.go('Login?recover=1', true);
 	},
-	
+
+	showSAMLLogin: function() {
+		// allow user to create a new account
+		app.setWindowTitle('SAML Login');
+		app.showTabBar(false);
+
+		this.div.css({ 'padding-top':'75px', 'padding-bottom':'75px' });
+		// TODO: redirect to IdP.
+		var html = '';
+
+		html += '<div class="inline_dialog_container">';
+		html += '<div class="dialog_title shade-light">SAML Login</div>';
+		html += '</div>';
+
+		this.div.html( html );
+	},
+
 	showRecoverPasswordForm: function() {
 		// allow user to create a new account
 		app.setWindowTitle('Forgot Password');

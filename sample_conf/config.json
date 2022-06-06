@@ -115,6 +115,8 @@
 		"max_failed_logins_per_hour": 5,
 		"max_forgot_passwords_per_hour": 3,
 		"free_accounts": false,
+		"saml_enabled": false,
+		"saml_only": false,
 		"sort_global_users": true,
 		"use_bcrypt": true,
 		
