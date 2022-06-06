@@ -1,4 +1,6 @@
-Class.subclass( Page.Base, "Page.Login", {	
+import passport from "../../../lib/saml";
+
+Class.subclass( Page.Base, "Page.Login", {
 	
 	onInit: function() {
 		// called once at page load
@@ -276,14 +278,10 @@ Class.subclass( Page.Base, "Page.Login", {
 		app.showTabBar(false);
 
 		this.div.css({ 'padding-top':'75px', 'padding-bottom':'75px' });
-		// TODO: redirect to IdP.
-		var html = '';
-
-		html += '<div class="inline_dialog_container">';
-		html += '<div class="dialog_title shade-light">SAML Login</div>';
-		html += '</div>';
-
-		this.div.html( html );
+		passport.authenticate('saml', {
+			successRedirect: '/',
+			failureRedirect: '/login',
+		});
 	},
 
 	showRecoverPasswordForm: function() {
